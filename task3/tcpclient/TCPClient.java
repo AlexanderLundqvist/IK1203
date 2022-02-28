@@ -16,7 +16,7 @@ public class TCPClient {
         this.limit = limit;
     }
 
-    public byte[] askServer(String hostname, int port, byte [] toServerBytes) throws IOException {
+    public byte[] askServer(String hostname, int port, byte[] toServerBytes) throws IOException {
 
         // Dynamic byte array to store the actual answer from the server
         ByteArrayOutputStream serverResponseBuffer = new ByteArrayOutputStream();
