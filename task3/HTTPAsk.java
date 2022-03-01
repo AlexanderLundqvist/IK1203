@@ -53,7 +53,7 @@ public class HTTPAsk {
         DataOutputStream fromServer = new DataOutputStream(connectionSocket.getOutputStream());
         BufferedReader toServer = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
         String[] headersRaw = toServer.readLine().split("[\\?= &]");
-        System.out.println("Getting input from socket...");
+        System.out.println("Getting input from socket...\n");
 
         // Initial query parameters
         String hostname = null;
@@ -64,32 +64,33 @@ public class HTTPAsk {
         Integer limit = null;
 
         // Test headersRaw
+        System.out.println("Testing headers");
         for (int i = 0; i < headersRaw.length; i++) {
             System.out.println(headersRaw[i]);
         }
 
-        System.out.println("Parsing HTTP request...");
+        System.out.println("\nParsing HTTP request...");
         // Needs to handle more cases
-        if (headersRaw[1] == "/ask") {
+        if (headersRaw[1].equals("/ask")) {
           try {
             // Bad loop, reimplement with arrayList for task 4?
             for (int i = 2; i < headersRaw.length; i++) {
-                if (headersRaw[i] == "hostname") {
+                if (headersRaw[i].equals("hostname")) {
                     hostname = headersRaw[i+1];
                 }
-                if (headersRaw[i] == "port") {
+                if (headersRaw[i].equals("port")) {
                     port = Integer.parseInt(headersRaw[i+1]);
                 }
-                if (headersRaw[i] == "string") {
+                if (headersRaw[i].equals("string")) {
                     toServerBytes = headersRaw[i+1].getBytes(StandardCharsets.UTF_8);
                 }
-                if (headersRaw[i] == "shutdown") {
+                if (headersRaw[i].equals("shutdown")) {
                     shutdown = Boolean.parseBoolean(headersRaw[i+1]);
                 }
-                if (headersRaw[i] == "timeout") {
+                if (headersRaw[i].equals("timeout")) {
                     timeout = Integer.valueOf(headersRaw[i+1]);
                 }
-                if (headersRaw[i] == "limit") {
+                if (headersRaw[i].equals("limit")) {
                     limit = Integer.valueOf(headersRaw[i+1]);
                 }
             }
@@ -100,21 +101,25 @@ public class HTTPAsk {
           }
 
           // Test headers parsed
+          System.out.println("\nTesting parsed headers");
           System.out.println(hostname);
           System.out.println(port);
-          for (int i = 0; i < toServerBytes.length; i++) {
-              System.out.println(toServerBytes[i]);
-          }
+          // for (int i = 0; i < toServerBytes.length; i++) {
+          //     System.out.println(toServerBytes[i]);
+          // }
           System.out.println(shutdown);
           System.out.println(timeout);
           System.out.println(limit);
 
           // Try opening the TCP client
-          System.out.println("Opening TCP client...");
+          System.out.println("\nOpening TCP client...");
           try {
             TCPClient tcpClient = new TCPClient(shutdown, timeout, limit);
             byte[] serverResponse = tcpClient.askServer(hostname, port, toServerBytes);
             fromServer.writeBytes("HTTP/1.1 200 OK\r\n\r\n");
+
+            System.out.println("\nAfter serverBytes");
+
 
             // For testing
             String serverResponseParsed = new String(serverResponse);
@@ -127,6 +132,7 @@ public class HTTPAsk {
 
           } catch (IOException ex) {
             fromServer.writeBytes("HTTP/1.1 404 Not Found\r\n");
+            System.out.println("Error in TCP connection: " + ex);
             connectionSocket.close();
           }
         }
@@ -136,7 +142,7 @@ public class HTTPAsk {
           connectionSocket.close();
         }
 
-        System.out.println("Client has been served...");
+        System.out.println("\nClient has been served...\n\n");
         connectionSocket.close();
       }
 
