@@ -111,9 +111,9 @@ public class RunnableClient implements Runnable {
 
       System.out.println("\nClient has been served...\n\n");
 
+    } catch (Exception ex) {
+      System.out.println("Server error: " + ex);
+      System.exit(1);
     }
-  } catch (Exception ex) {
-    System.out.println("Server error: " + ex);
-    System.exit(1);
   }
 }
