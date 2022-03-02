@@ -104,9 +104,9 @@ public class HTTPAsk {
           System.out.println("\nTesting parsed headers");
           System.out.println(hostname);
           System.out.println(port);
-          // for (int i = 0; i < toServerBytes.length; i++) {
-          //     System.out.println(toServerBytes[i]);
-          // }
+          for (int i = 0; i < toServerBytes.length; i++) {
+            System.out.println(new String(toServerBytes[i]));
+          }
           System.out.println(shutdown);
           System.out.println(timeout);
           System.out.println(limit);
