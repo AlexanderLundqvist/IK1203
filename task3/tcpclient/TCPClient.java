@@ -33,7 +33,10 @@ public class TCPClient {
             InputStream fromServer = clientSocket.getInputStream();
 
             // Sending request to server
-            toServer.write(toServerBytes, 0, toServerBytes.length);
+            if (toServerBytes != null) {
+              toServer.write(toServerBytes, 0, toServerBytes.length);
+              toServer.write('\n');
+            }
 
             // Close the outgoing stream after sending data to server if the shutdown flag is true
             if (shutdown) {clientSocket.shutdownOutput();}
