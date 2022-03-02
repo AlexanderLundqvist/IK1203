@@ -91,7 +91,7 @@ public class HTTPAsk {
                   port = Integer.parseInt(headersRaw[i+1]);
               }
               if (headersRaw[i].equals("string")) {
-                  toServerBytes = headersRaw[i+1].getBytes(StandardCharsets.UTF_8);
+                  toServerBytes = (headersRaw[i+1]+"\n").getBytes(StandardCharsets.UTF_8);
               }
               if (headersRaw[i].equals("shutdown")) {
                   shutdown = Boolean.parseBoolean(headersRaw[i+1]);
